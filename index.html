@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>口試初審用計時器司儀程序</title>
+    <style>
+        .but1 {
+            display: inline-block;
+        }
+
+        #timer {
+            font-size: 15em; /* 放大計時器文字大小 */
+        }
+
+        #timer2 {
+            font-size: 15em; /* 放大計時器文字大小 */
+        }
+
+        #timer3 {
+            font-size: 15em; /* 放大計時器文字大小 */
+        }
+
+        #button1, #button2, #button3, #button4 {
+            /* CSS */
+            background-color: #13aa52;
+            border: 1px solid #13aa52;
+            border-radius: 4px;
+            box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            outline: none;
+            outline: 0;
+            padding: 10px 25px;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 150ms, box-shadow 150ms;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        #button1:hover, #button2:hover, #button3:hover, #button4:hover {
+        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+        transform: translateY(-2px);
+        }
+
+        @media (min-width: 768px) {
+            #button1, #button2, #button3, #button4 {
+            padding: 10px 30px;
+        }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <h3>主簡報時間</h3>
+    <div id="timer">10:00</div>
+    <button id="button1" onclick="startTimer()">開始計時</button>
+    <button id="button3" onclick="startTimer2()">評審提問</button>
+    <button id="button4" onclick="window.location.reload();">重新整理</button>
+
+    <!--<div class="column">
+        <h3 class="but1">評審提問時間</div>
+        <div id="timer2" class="but1">3:00</div>    
+    </div>-->
+   
+    <script>
+        let timeLeft = 600; // 初始時間為5分鐘，以秒為單位
+        let timeLeft2 = 0; // 初始時間為5分鐘，以秒為單位
+        let timeLeft3 = 0; // 初始時間為5分鐘，以秒為單位
+        let timer; // 定時器變數
+        let timer2; // 定時器變數
+        let timer3; // 定時器變數
+
+        function startTimer() {
+            timer = setInterval(updateTimer, 1000); // 每秒更新計時器
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft === 120) {
+                ringBell(); // 當剩餘時間為2分鐘時響鈴一次
+            } else if (timeLeft === 60) {
+                ringBell(); // 當剩餘時間為1分鐘時響鈴兩次
+                setTimeout(ringBell, 500); // 0.5秒後再響鈴一次
+            }
+
+            if (timeLeft === 0) {
+                clearInterval(timer); // 倒數計時結束時停止計時器
+                document.getElementById('timer').innerText = '計時結束';
+                playAlarm(); // 播放鬧鐘音效
+            } else {
+                timeLeft--;
+            }
+        }
+
+        function startTimer2() {
+            timer2 = setInterval(updateTimer2, 1000); // 每秒更新計時器
+            const prepareQA = new Audio('簡報結束.mp3'); // 插入鬧鐘音效的檔案路徑
+            prepareQA.play();
+        }
+
+        function updateTimer2() {
+            const minutes = Math.floor(timeLeft2 / 60);
+            const seconds = timeLeft2 % 60;
+
+            document.getElementById('timer2').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;          
+
+            if (timeLeft2 === 120) {
+                ringBell(); // 當剩餘時間為2分鐘時響鈴一次
+            } else if (timeLeft2 === 60) {
+                ringBell(); // 當剩餘時間為1分鐘時響鈴兩次
+                setTimeout(ringBell, 500); // 0.5秒後再響鈴一次
+            }
+
+            if (timeLeft2 === 0) {
+                clearInterval(timer); // 倒數計時結束時停止計時器
+                document.getElementById('timer2').innerText = '計時結束';
+                playAlarm(); // 播放鬧鐘音效
+            } else {
+                timeLeft2--;
+            }
+        }
+
+        function startTimer3() {
+            timer3 = setInterval(updateTimer3, 1000); // 每秒更新計時器
+        }
+
+        function updateTimer3() {
+            const minutes = Math.floor(timeLeft3 / 60);
+            const seconds = timeLeft3 % 60;
+
+            document.getElementById('timer3').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;          
+
+            if (timeLeft3 === 0) {
+                clearInterval(timer3); // 倒數計時結束時停止計時器
+                document.getElementById('timer3').innerText = '計時結束';
+                QA_stop(); // 播放鬧鐘音效
+            } else {
+                timeLeft3 --;
+            }
+        }
+
+
+
+        function stoppost(){
+            const postend = new Audio('簡報結束.mp3'); // 插入鬧鐘音效的檔案路徑
+            postend.play();
+        }
+
+        function QAing(){
+            //const QAing = new Audio('進行申覆.mp3'); // 插入鬧鐘音效的檔案路徑
+           // QAing.play();
+        }
+
+        function QA_stop(){
+            const QA_stop = new Audio('報告結束.mp3'); // 插入鬧鐘音效的檔案路徑
+            QA_stop.play();
+        }
+
+        function ringBell() {
+            const ring = new Audio('ding.mp3'); // 插入鬧鐘音效的檔案路徑
+            ring.play();
+        }
+
+        function playAlarm() {
+            const alarm = new Audio('13463.mp3'); // 插入鬧鐘音效的檔案路徑
+            alarm.play();
+        }
+    </script>
+</body>
+</html>
